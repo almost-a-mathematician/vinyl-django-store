@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
+	<title>Vinyl</title>
+	<script type="text/javascript">
+		var user = '{{request.user}}'
+
+		function getToken(name) {
+		    var cookieValue = null;
+		    if (document.cookie && document.cookie !== '') {
+		        var cookies = document.cookie.split(';');
+		        for (var i = 0; i < cookies.length; i++) {
+		            var cookie = cookies[i].trim();
+		            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+		                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+		                break;
+		            }
+		        }
+		    }
+		    return cookieValue;
+		}
+		var csrftoken = getToken('csrftoken')
+		
+
+		function getCookie(name) {
+		    var cookieArr = document.cookie.split(";");
+		    for(var i = 0; i < cookieArr.length; i++) {
+		        var cookiePair = cookieArr[i].split("=");
+		        if(name == cookiePair[0].trim()) {
+		            return decodeURIComponent(cookiePair[1]);
+		        }
+		    }
+		    return null;
+		}
+		var cart = JSON.parse(getCookie('cart'))
+
+		if(cart == undefined){
+			cart = {}
+			console.log('Cart was created!')
+			document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/"
+		}
+
+		console.log('Cart:', cart)
+
+	</script>
+</head>
+<body>
+	<div class="nav-fixed">
+		<img class="nav" src="{% static 'imgs/1.jpg' %}" alt="">
+		<nav class="navbar navbar-expand-lg navbar-dark navbar-flex">
+			<a class="navbar-brand" href="{% url 'store' %}">Vinyl</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			  <span class="navbar-toggler-icon"></span>
+			</button>
+		  
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			  <ul class="navbar-nav mr-auto"></ul>
+			  <div class="form-inline my-2 my-lg-0">
+				<a href="{% url 'cart' %}">
+				   <img  id="cart-icon" src="{% static 'imgs/shopping_cart.png' %}">
+			   </a>
+			   <p id="cart-total">{{cartItems}}</p>
+			</div>
+			</div>
+		</nav>
+	</div>
+	
+
+   <div class="container">
+        {% block content %}
+
+        {% endblock content %}
+   </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+   
+   	<footer>
+		<img class="footer" src="{% static 'imgs/footer.jpg' %}" alt="">
+		<p><h1 class="info">Vinyl</h1></p>
+		<a href="{% url 'cart' %}">
+			<p><h1 class="info-cart">Cart</h1></p>
+		</a>
+		<a class="checkout" href="{% url 'checkout' %}">
+			<p><h1 class="info-checkout">Checkout</h1></p>
+		</a>
+		<div class="social-media">	
+			<img class="footer-facebook" src="{% static './imgs/facebook.svg' %}" alt="">
+			<img class="footer-inst" src="{% static './imgs/instagram.svg' %}" alt="">
+			<img class="footer-snap" src="{% static './imgs/snapchat.png' %}" alt="">
+			<img class="footer-twitter" src="{% static './imgs/twitter.svg' %}" alt="">
+			<img class="footer-tg" src="{% static './imgs/telegram.png' %}" alt="">
+			<img class="footer-pinterest" src="{% static './imgs/pinterest.svg' %}" alt="">
+		</div>	
+		<h1 class="gmail">Vinyl@gmail.com</h1>
+		<div class="footer-payment">
+			<img class="visa" src="{% static './imgs/visa.png' %}" alt="">
+			<img class="mastercard" src="{% static './imgs/mastercard.png' %}" alt="">
+			<img class="paypal" src="{% static './imgs/paypal.png' %}" alt="">
+			<img class="amazon" src="{% static './imgs/amazon.png' %}" alt="">
+			<img class="apple-pay" src="{% static './imgs/apple-pay.png' %}" alt="">
+			<img class="jcb" src="{% static './imgs/jcb.png' %}" alt="">
+			<img class="discover-card" src="{% static './imgs/discover-card.png' %}" alt="">
+			<img class="diners-club" src="{% static './imgs/diners-club.png' %}" alt="">
+			<img class="american-express" src="{% static './imgs/american-express.png' %}" alt="">
+		</div>
+		<h1 class="c">©Vinyl 2023</h1>
+	</footer>
+
+	
+   
+    <style>
+body{
+	background-color: hsl(0, 0%, 98%);
+	font-family: 'Indie Flower', cursive;
+}
+
+h1,h2,h3,h4,h5,h6{
+	color:hsl(0, 0%, 30%);
+}
+
+.box-element{
+	border-radius: 4px;
+	padding: 10px;
+}
+
+.product{
+	border-radius: 0 0 4px 4px;
+	display: flex;
+}
+
+#cart-icon{
+	display: inline-block;
+	margin-left: 15px;
+}
+
+.row-image{
+	width: 100px;
+}
+
+.form-field{
+	width:250px;
+	display: inline-block;
+	padding: 5px;
+}
+
+.cart-row{
+	display: flex;
+    align-items: flex-stretch;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ececec;
+}
+
+.nav-fixed{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 3;
+}
+
+.quantity{
+	display: inline-block;
+	font-weight: 700;
+	padding-right:10px;
+}
+
+.chg-quantity{
+	width: 12px;
+	cursor: pointer;
+	display: block;
+	margin-top: 5px;
+	transition:.1s;
+}
+
+.chg-quantity:hover{
+	opacity: .6;
+}
+
+.hidden{
+	display: none!important;
+}
+
+.nav{
+	width: 90rem;
+	height: 6rem;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.navbar-flex{
+	display: flex;
+	width: 100%;
+	justify-content: space-between;
+	align-items: center;
+	margin: 0 auto;
+}
+
+.navbar-brand{
+	font-size: 3rem;
+	font-family: 'Indie Flower', cursive;
+	margin-left: 1rem;
+}
+
+.thumbnail{
+	width: 350px;
+	height: 330px;
+}
+
+#cart-total{
+	display: block;
+	text-align: center;
+	color:#fff;
+	width: 20px;
+	height: 25px;
+	font-size: 14px;
+	margin-top: 1.5rem;
+}
+
+#cart-icon{
+	width:25px;
+	display: inline-block;
+	margin-left: 15px;
+	color:#ececec;
+	margin-top: 1.5rem;
+}
+
+.update-cart{
+	border-radius: 50%;
+	font-size: 2rem;
+	border: none;
+	float:right;
+	margin-right: 12px;
+	margin-top: -5px;
+}
+
+.update-cart:hover{
+	text-decoration: none;
+}
+
+.checkout{
+	color:hsl(0, 0%, 30%);
+}
+
+.checkout:hover{
+	color:hsl(0, 0%, 30%);
+	text-decoration: none;
+}
+
+.col-lg-4, .col-lg-6, .col-lg-8, .col-lg-12{
+	margin-top: 3rem;
+}
+
+.box-element{
+	padding: 1rem;
+	width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.price{
+	font-size: 1.5rem;
+	margin-left: 40px;
+}
+
+.add{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 40%;
+}
+
+.prname{
+	font-size: 0.9rem;
+}
+
+.footer{
+	width: 90rem;
+	position: relative;
+}
+
+.info{
+	color: rgb(255, 255, 255);
+	font-size: 4rem;
+	position: absolute;
+	margin-top: -27rem;
+	margin-left: 40rem;
+}
+
+.info-cart{
+	color: rgb(255, 255, 255);
+	font-size: 2rem;
+	position: absolute;
+	margin-top: -22rem;
+	margin-left: 41.5rem;
+}
+
+.info-checkout{
+	color: rgb(255, 255, 255);
+	font-size: 2rem;
+	position: absolute;
+	margin-top: -19rem;
+	margin-left: 40rem;
+}
+
+.continue{
+	background-color: rgb(250, 250, 250);
+	color:hsl(0, 0%, 30%);
+	border: none;
+}
+
+.continue:hover{
+	background-color:rgb(250, 250, 250);
+	border: none;
+	color:hsl(0, 0%, 30%);
+}
+
+.pay{
+	width: 31rem;
+	border-color: rgb(250, 250, 250);
+}
+
+.pay:hover{
+	background-color: hsl(0, 0%, 30%);
+	color: rgb(250, 250, 250);
+}
+
+.container{
+	margin-top: 98px;
+}
+
+.marg{
+	margin-right: -15px;
+}
+
+.social-media{
+	margin-top: -15rem;
+	position: absolute;
+	margin-left: 38rem;
+}
+
+.footer-tg {
+    filter: invert(91%) sepia(100%) saturate(0%) hue-rotate(172deg) brightness(107%) contrast(101%);
+	width: 24px;
+	height: 24px;
+}
+
+.footer-snap{
+	filter: invert(95%) sepia(0%) saturate(0%) hue-rotate(50deg) brightness(107%) contrast(103%);
+	width: 24px;
+	height: 24px;
+}
+
+.gmail{
+	margin-top: -12rem;
+	color:#ffffff;
+	position: absolute;
+	font-size: 1.5rem;
+	margin-left: 38.5rem;
+}
+
+.footer-payment{
+	margin-left: 33rem;
+	margin-top: -9rem;
+	position: absolute;
+}
+
+.visa{
+	filter: invert(95%) sepia(0%) saturate(0%) hue-rotate(50deg) brightness(107%) contrast(103%);
+	height: 24px;
+	width: 24px;
+}
+
+.mastercard{
+	height: 24px;
+	width: 24px;
+}
+
+.paypal{
+	height: 24px;
+	width: 40px;
+	filter: invert(95%) sepia(0%) saturate(0%) hue-rotate(50deg) brightness(107%) contrast(103%);
+}
+
+.amazon{
+	height: 28px;
+	width: 43px;
+	filter: invert(91%) sepia(100%) saturate(0%) hue-rotate(172deg) brightness(107%) contrast(101%);
+	margin-left: -2px;
+	margin-top: 2px;
+}
+
+.apple-pay{
+	height: 28px;
+	width: 32px;
+	margin-top: -3px;
+}
+
+.jcb{
+	height: 24px;
+	width: 24px;
+}
+
+.discover-card{
+	height: 24px;
+	width: 24px;
+}
+
+.diners-club{
+	height: 24px;
+	width: 24px;
+}
+
+.american-express{
+	height: 24px;
+	width: 24px;
+}
+
+.c{
+	color:#ffffff;
+	margin-top: -4rem;
+	position: absolute;
+	font-size: 1rem;
+	margin-left: 40rem;
+}
+    </style>
+
+	<script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
+</body>
+</html>
+
